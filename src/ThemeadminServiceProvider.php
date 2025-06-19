@@ -30,6 +30,7 @@ class themeadminServiceProvider extends ServiceProvider
             $view->with('companyName', $companyName);
             $view->with('subdomain', $subdomain);
         });
+        
 
 
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
