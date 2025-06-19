@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class Aside extends Component
+class AsideMobile extends Component
 {
     public $navigations = null;
 
@@ -37,6 +37,6 @@ class Aside extends Component
 
     public function render()
     {
-        return view('themeadmin::components.backend.layouts.partials.aside', ['navigations' => $this->navigations]);
+        return view('themeadmin::components.backend.layouts.partials.aside-mobile', ['navigations' => $this->navigations]);
     }
 }

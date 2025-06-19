@@ -2,7 +2,7 @@
 <aside class="flex-shrink-0 hidden w-64 bg-white border-r dark:border-primary-darker dark:bg-darker md:block">
     <div class="flex flex-col h-full">
         <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
-            <div x-data="{ isActive: true, open: true }">
+            {{-- <div x-data="{ isActive: true, open: true }">
                 <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
                 <a href="#" class="{{ request()->routeIs('admin.dashboard') ? 'bg-primary-100 dark:bg-primary' : '' }} flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary" role="button" aria-haspopup="true"
                     :aria-expanded="(open || isActive) ? 'true' : 'false'">
@@ -15,11 +15,20 @@
                     </span>
                     <span class="ml-2 text-sm"> Dashboards </span>
                 </a>
-            </div>
-            
+            </div> --}}
+
             @foreach ($navigations as $navTitle => $navLink)
-                <a href="{{ route($navLink) }}" class="{{ request()->routeIs('$navLink') ? 'bg-primary-100 dark:bg-primary' : '' }} flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary" role="button" aria-haspopup="true"
-                    :aria-expanded="(open || isActive) ? 'true' : 'false'">
+                @php
+                    $url = is_array($navLink) ? route($navLink['name'], $navLink['params']) : $navLink;
+                    
+                    $isActive = is_array($navLink)
+                        ? request()->routeIs($navLink['name'])
+                        : request()->url() === $navLink;
+                @endphp
+
+                <a href="{{ $url }}"
+                    class="{{ $isActive ? 'bg-primary-100 dark:bg-primary' : '' }} flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                    role="button" aria-haspopup="true" :aria-expanded="(open || isActive) ? 'true' : 'false'">
                     <span aria-hidden="true">
                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -30,6 +39,7 @@
                     <span class="ml-2 text-sm"> {{ Str::title($navTitle) }} </span>
                 </a>
             @endforeach
+
         </nav>
     </div>
 </aside>
@@ -248,4 +258,3 @@
         </div>
     </div>
 </aside> --}}
-

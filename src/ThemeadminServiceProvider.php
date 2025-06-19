@@ -70,6 +70,7 @@ class themeadminServiceProvider extends ServiceProvider
 
 
         \Illuminate\Support\Facades\Blade::component('sb-admin-aside', \Sazumme\Themeadmin\App\View\Components\Backend\Layouts\Partials\Aside::class);
+        \Illuminate\Support\Facades\Blade::component('sb-admin-aside-mob', \Sazumme\Themeadmin\App\View\Components\Backend\Layouts\Partials\AsideMobile::class);
         \Illuminate\Support\Facades\Blade::component('sb-admin-footer', \Sazumme\Themeadmin\App\View\Components\Backend\Layouts\Partials\Footer::class);
     }
 }
