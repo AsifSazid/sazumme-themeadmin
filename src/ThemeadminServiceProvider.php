@@ -15,18 +15,20 @@ class themeadminServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
-            $host = request()->getHost(); 
-            $subdomain = explode('.', $host)[0];
+            $host = request()->getHost();
+            $parts = explode('.', $host);
+            $subdomain = count($parts) > 2 ? $parts[0] : null;
 
             $companyNames = [
                 'publication' => 'SazVerse Publication',
-                'sub_two' => 'Company Two',
-                'sub_three' => 'Company Three',
+                // 'sub_two' => 'Company Two',
+                // 'sub_three' => 'Company Three',
             ];
 
-            $companyName = $companyNames[$subdomain] ?? 'SazUmme';
+            $companyName = $companyNames[$subdomain] ?? 'SazUmme Technology';
 
             $view->with('companyName', $companyName);
+            $view->with('subdomain', $subdomain);
         });
 
 

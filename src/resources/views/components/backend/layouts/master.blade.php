@@ -9,6 +9,13 @@
 </head>
 
 <body>
+    @php
+        $isSubdomain = isset($subdomain);
+        $logoutRoute = $isSubdomain ? route('user.logout', ['subdomain' => $subdomain]) : route('admin.logout');
+        // dd($subdomain);
+    @endphp
+
+
     <div x-data="setup()" x-init="$refs.loading.classList.add('hidden');
     setColors(color);" :class="{ 'dark': isDark }">
         <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
@@ -41,7 +48,7 @@
                         <!-- Brand -->
                         <a href="index.html"
                             class="inline-block text-2xl font-bold tracking-wider uppercase text-primary-dark dark:text-light">
-                            SazVerse Publication
+                            {{ $companyName }}
                         </a>
 
                         <!-- Mobile sub menu button -->
@@ -60,14 +67,16 @@
                         <!-- Desktop Right buttons -->
                         <nav aria-label="Secondary" class="hidden space-x-2 md:flex md:items-center">
                             <!-- Toggle dark theme button -->
-                            <button aria-hidden="true" class="relative focus:outline-none" x-cloak
-                                @click="toggleTheme">
+                            <button aria-hidden="true" class="relative focus:outline-none" x-cloak @click="toggleTheme">
                                 <div
                                     class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-lighter">
                                 </div>
                                 <div class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-150 transform scale-110 rounded-full shadow-sm"
-                                    :class="{ 'translate-x-0 -translate-y-px  bg-white text-primary-dark': !
-                                        isDark, 'translate-x-6 text-primary-100 bg-primary-darker': isDark }">
+                                    :class="{
+                                        'translate-x-0 -translate-y-px  bg-white text-primary-dark': !
+                                            isDark,
+                                        'translate-x-6 text-primary-100 bg-primary-darker': isDark
+                                    }">
                                     <svg x-show="!isDark" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -146,10 +155,14 @@
                                         class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                                         Settings
                                     </a>
-                                    <a href="#" role="menuitem"
-                                        class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                                        Logout
-                                    </a>
+                                    <!-- Authentication -->
+                                    <form method="POST" action="{{ $logoutRoute }}">
+                                        @csrf
+                                        <x-dropdown-link href="#"
+                                            onclick="event.preventDefault(); this.closest('form').submit();">
+                                            {{ __('Log Out') }}
+                                        </x-dropdown-link>
+                                    </form>
                                 </div>
                             </div>
                         </nav>
@@ -172,8 +185,11 @@
                                         class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-lighter">
                                     </div>
                                     <div class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 transform scale-110 rounded-full shadow-sm"
-                                        :class="{ 'translate-x-0 -translate-y-px  bg-white text-primary-dark': !
-                                            isDark, 'translate-x-6 text-primary-100 bg-primary-darker': isDark }">
+                                        :class="{
+                                            'translate-x-0 -translate-y-px  bg-white text-primary-dark': !
+                                                isDark,
+                                            'translate-x-6 text-primary-100 bg-primary-darker': isDark
+                                        }">
                                         <svg x-show="!isDark" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -252,10 +268,14 @@
                                         class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
                                         Settings
                                     </a>
-                                    <a href="#" role="menuitem"
-                                        class="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-light dark:hover:bg-primary">
-                                        Logout
-                                    </a>
+                                    <!-- Authentication -->
+                                    <form method="POST" action="{{ $logoutRoute }}">
+                                        @csrf
+                                        <x-dropdown-link href="#"
+                                            onclick="event.preventDefault(); this.closest('form').submit();">
+                                            {{ __('LogOut') }}
+                                        </x-dropdown-link>
+                                    </form>
                                 </div>
                             </div>
                         </nav>
@@ -599,8 +619,12 @@
                                 <!-- Light button -->
                                 <button @click="setLightTheme"
                                     class="flex items-center justify-center px-4 py-2 space-x-4 transition-colors border rounded-md hover:text-gray-900 hover:border-gray-900 dark:border-primary dark:hover:text-primary-100 dark:hover:border-primary-light focus:outline-none focus:ring focus:ring-primary-lighter focus:ring-offset-2 dark:focus:ring-offset-dark dark:focus:ring-primary-dark"
-                                    :class="{ 'border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100': !
-                                            isDark, 'text-gray-500 dark:text-primary-light': isDark }">
+                                    :class="{
+                                        'border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100':
+                                            !
+                                            isDark,
+                                        'text-gray-500 dark:text-primary-light': isDark
+                                    }">
                                     <span>
                                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -614,8 +638,11 @@
                                 <!-- Dark button -->
                                 <button @click="setDarkTheme"
                                     class="flex items-center justify-center px-4 py-2 space-x-4 transition-colors border rounded-md hover:text-gray-900 hover:border-gray-900 dark:border-primary dark:hover:text-primary-100 dark:hover:border-primary-light focus:outline-none focus:ring focus:ring-primary-lighter focus:ring-offset-2 dark:focus:ring-offset-dark dark:focus:ring-primary-dark"
-                                    :class="{ 'border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100': isDark, 'text-gray-500 dark:text-primary-light':
-                                            !isDark }">
+                                    :class="{
+                                        'border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100': isDark,
+                                        'text-gray-500 dark:text-primary-light':
+                                            !isDark
+                                    }">
                                     <span>
                                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -685,14 +712,20 @@
                             <div class="space-x-2">
                                 <button @click.prevent="activeTabe = 'action'"
                                     class="px-px pb-4 transition-all duration-200 transform translate-y-px border-b focus:outline-none"
-                                    :class="{ 'border-primary-dark dark:border-primary': activeTabe ==
-                                        'action', 'border-transparent': activeTabe != 'action' }">
+                                    :class="{
+                                        'border-primary-dark dark:border-primary': activeTabe ==
+                                            'action',
+                                        'border-transparent': activeTabe != 'action'
+                                    }">
                                     Action
                                 </button>
                                 <button @click.prevent="activeTabe = 'user'"
                                     class="px-px pb-4 transition-all duration-200 transform translate-y-px border-b focus:outline-none"
-                                    :class="{ 'border-primary-dark dark:border-primary': activeTabe ==
-                                        'user', 'border-transparent': activeTabe != 'user' }">
+                                    :class="{
+                                        'border-primary-dark dark:border-primary': activeTabe ==
+                                            'user',
+                                        'border-transparent': activeTabe != 'user'
+                                    }">
                                     User
                                 </button>
                             </div>
@@ -896,9 +929,9 @@
             <!-- Backdrop -->
             <div x-transition:enter="transition duration-300 ease-in-out" x-transition:enter-start="opacity-0"
                 x-transition:enter-end="opacity-100" x-transition:leave="transition duration-300 ease-in-out"
-                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                x-show="isSearchPanelOpen" @click="isSearchPanelOpen = false"
-                class="fixed inset-0 z-10 bg-primary-darker" style="opacity: 0.5" aria-hidden="ture"></div>
+                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-show="isSearchPanelOpen"
+                @click="isSearchPanelOpen = false" class="fixed inset-0 z-10 bg-primary-darker" style="opacity: 0.5"
+                aria-hidden="ture"></div>
             <!-- Panel -->
             <section x-transition:enter="transition duration-300 ease-in-out transform sm:duration-500"
                 x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
@@ -910,8 +943,8 @@
                     <!-- Close button -->
                     <button @click="isSearchPanelOpen = false"
                         class="p-2 text-white rounded-md focus:outline-none focus:ring">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -953,8 +986,7 @@
                         </a>
                         <a href="#" class="flex space-x-4">
                             <div class="flex-shrink-0">
-                                <img class="w-10 h-10 rounded-lg" src="build/images/avatar.jpg"
-                                    alt="Ahmed Kamel" />
+                                <img class="w-10 h-10 rounded-lg" src="build/images/avatar.jpg" alt="Ahmed Kamel" />
                             </div>
                             <div class="flex-1 max-w-xs overflow-hidden">
                                 <h4 class="text-sm font-semibold text-gray-600 dark:text-light">Ahmed Kamel</h4>
