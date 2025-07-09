@@ -23,6 +23,7 @@ class Aside extends Component
             $this->navigations = [
                 'Dashboard' => ['name' => 'admin.dashboard', 'params' => []],
                 'Announcements' => ['name' => 'admin.announcements.index', 'params' => []],
+                'Visitor Logs' => ['name' => 'admin.visitorlogs.index', 'params' => []],
             ];
         } else {
             $host = request()->getHost();

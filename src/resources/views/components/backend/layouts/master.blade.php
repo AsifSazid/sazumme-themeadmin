@@ -6,6 +6,8 @@
     <x-sb-admin-title :title="$companyName" />
     <x-sb-admin-favicon />
     <x-sb-admin-style />
+
+    @stack('css')
 </head>
 
 <body>
@@ -784,6 +786,8 @@
     </div>
 
     <x-sb-admin-js />
+
+    @stack('js')
 </body>
 
 </html>
