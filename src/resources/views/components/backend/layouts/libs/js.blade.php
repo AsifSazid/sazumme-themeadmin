@@ -1,6 +1,6 @@
 <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.bundle.min.js"></script>
-<script src="{{asset('vendor/publication')}}/build/js/script.js"></script>
+<script src="{{asset('vendor/themeadmin')}}/build/js/script.js"></script>
 <script>
     const setup = () => {
         const getTheme = () => {
