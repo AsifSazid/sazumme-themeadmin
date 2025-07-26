@@ -67,7 +67,7 @@
                         </button>
 
                         <!-- Desktop Right buttons -->
-                        <nav aria-label="Secondary" class="hidden space-x-2 md:flex md:items-center">
+                        <nav aria-label="Secondary" class="space-x-2 md:flex md:items-center">
                             <!-- Toggle dark theme button -->
                             <button aria-hidden="true" class="relative focus:outline-none" x-cloak @click="toggleTheme">
                                 <div
