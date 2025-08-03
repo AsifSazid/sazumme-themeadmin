@@ -2,7 +2,7 @@
 <div class="border-b md:hidden dark:border-primary-darker" x-show="isMobileMainMenuOpen"
     @click.away="isMobileMainMenuOpen = false">
     <nav aria-label="Main" class="px-2 py-4 space-y-2">
-        @foreach ($navigations as $navTitle => $navLink)
+        {{-- @foreach ($navigations as $navTitle => $navLink)
             @php
                 $url = is_array($navLink) ? route($navLink['name'], $navLink['params']) : $navLink;
 
@@ -21,6 +21,51 @@
                 </span>
                 <span class="ml-2 text-sm"> {{ Str::title($navTitle) }} </span>
             </a>
+        @endforeach --}}
+        @foreach ($navigations as $nav)
+            @if ($nav->children->count())
+                <!-- Parent with children -->
+                <div x-data="{ open: false }" class="mb-2">
+                    <a href="#" @click.prevent="open = !open"
+                        class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
+                        :class="{ 'bg-primary-100 dark:bg-primary': open }">
+                        @if ($nav->nav_icon)
+                            <i class="{{ $nav->nav_icon }} w-5 h-5"></i>
+                        @endif
+                        <span class="ml-2 text-sm">{{ $nav->title }}</span>
+                        <span class="ml-auto">
+                            <svg class="w-4 h-4 transition-transform transform" :class="{ 'rotate-180': open }"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </span>
+                    </a>
+                    <div x-show="open" x-transition class="mt-2 space-y-2 px-7">
+                        @foreach ($nav->children as $child)
+                            <a href="{{ url($child->url) }}"
+                                class="block p-2 text-sm rounded-md transition-colors duration-200
+                        {{ request()->routeIs($child->route)
+                            ? 'text-gray-700 dark:text-light bg-primary-50 dark:bg-primary'
+                            : 'text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-light' }}">
+                                {{ $child->title }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <!-- Single link (no child) -->
+                <a href="{{ url($nav->url) }}"
+                    class="flex items-center p-2 text-sm text-gray-500 rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary
+            {{ request()->routeIs($nav->route) ? 'bg-primary-100 dark:bg-primary font-semibold' : '' }}">
+                    @if ($nav->nav_icon)
+                        <i class="{{ $nav->nav_icon }} w-5 h-5"></i>
+                    @endif
+                    <span class="ml-2">{{ $nav->title }}</span>
+                </a>
+            @endif
         @endforeach
+
     </nav>
 </div>

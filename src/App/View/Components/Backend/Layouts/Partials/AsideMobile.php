@@ -2,6 +2,7 @@
 
 namespace Sazumme\Themeadmin\App\View\Components\Backend\Layouts\Partials;
 
+use App\Models\Navigation;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
@@ -12,26 +13,43 @@ class AsideMobile extends Component
 {
     public $navigations = null;
 
-    // public function __construct($navigations)
-    // {
-    //     $this->navigations = $navigations;
-    // }
+    public function getAdminSidebarNavigation($subdomain = null)
+    {
+        $query = Navigation::query()
+            ->whereNull('parent_id')
+            ->where('is_active', false);
+
+        $navigations = $query->with(['children' => function ($q) {
+            $q->where('is_active', false);
+        }])->get();
+
+        return $navigations;
+    }
+    public function getUserSidebarNavigation($subdomain)
+    {
+        $query = Navigation::query()
+            ->whereNull('parent_id')
+            ->where('is_active', false)
+            ->where('subdomain', $subdomain);
+
+        $navigations = $query->with(['children' => function ($q) {
+            $q->where('is_active', false);
+        }])->get();
+
+        return $navigations;
+    }
 
     public function __construct()
     {
         if (Auth::guard()->name === 'admin') {
-            $this->navigations = [
-                'Dashboard' => ['name' => 'admin.dashboard', 'params' => []],
-                'Announcements' => ['name' => 'admin.announcements.index', 'params' => []],
-            ];
+            $this->navigations = $this->getAdminSidebarNavigation();
         } else {
+
             $host = request()->getHost();
             $parts = explode('.', $host);
             $subdomain = count($parts) > 2 ? $parts[0] : null;
-            $this->navigations = [
-                'Dashboard' => ['name' => 'user.dashboard', 'params' => ['subdomain' => $subdomain]],
-                'Ebooks' => ['name' => 'ebooks.index', 'params' => ['subdomain' => $subdomain]],
-            ];
+
+            $this->navigations = $this->getUserSidebarNavigation($subdomain);
         }
     }
 
