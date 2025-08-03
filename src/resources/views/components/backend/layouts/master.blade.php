@@ -306,7 +306,7 @@
                     </div> --}}
 
                     <!-- Content -->
-                    <div class="mt-2">
+                    <div class="mt-2 p-4">
 
                         {{ $slot }}
 
