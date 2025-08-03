@@ -3,6 +3,8 @@
 namespace Sazumme\Themeadmin\App\View\Components\Backend\Layouts\Partials;
 
 use App\Models\Navigation;
+use App\Models\UserWing;
+use App\Models\Wing;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
@@ -28,14 +30,32 @@ class Aside extends Component
     }
     public function getUserSidebarNavigation($subdomain)
     {
-        $query = Navigation::query()
-            ->whereNull('parent_id')
-            ->where('is_active', false)
-            ->where('subdomain', $subdomain);
+        $user = Auth::user()->uuid;
+        $wing = Wing::where('subdomain', $subdomain)->first()->uuid;
+        $hasPermission = UserWing::where('user_uuid', $user)
+            ->where('wing_uuid', $wing)
+            ->exists();
 
-        $navigations = $query->with(['children' => function ($q) {
-            $q->where('is_active', false);
-        }])->get();
+        if ($hasPermission) {
+            $query = Navigation::query()
+                ->whereNull('parent_id')
+                ->where('is_active', false)
+                ->where('subdomain', $subdomain);
+
+            $navigations = $query->with(['children' => function ($q) {
+                $q->where('is_active', false);
+            }])->get();
+        } else {
+            $navigations = collect([
+                (object)[
+                    'title' => 'Go To Welcome Page',
+                    'route' => $subdomain . '.landing',
+                    'url' => route($subdomain . '.landing'),
+                    'nav_icon' => 'fas fa-home',
+                    'children' => collect([]),
+                ],
+            ]);
+        }
 
         return $navigations;
     }
