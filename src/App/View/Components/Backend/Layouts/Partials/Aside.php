@@ -20,13 +20,25 @@ class Aside extends Component
     {
         $query = Navigation::query()
             ->whereNull('parent_id')
-            ->where('is_active', false);
+            ->where('is_active', true);
 
         $navigations = $query->with(['children' => function ($q) {
-            $q->where('is_active', false);
+            $q->where('is_active', true);
         }])->get();
 
-        return $navigations;
+        // dd($navigations);
+
+        // $navigations = collect([
+        //     (object)[
+        //         'title' => 'Go To Welcome Page',
+        //         'route' => 'welcome',
+        //         'url' => route('welcome'),
+        //         'nav_icon' => 'fas fa-home',
+        //         'children' => collect([]),
+        //     ],
+        // ]);
+
+        return $navigations ;
     }
     public function getUserSidebarNavigation($subdomain)
     {
@@ -39,11 +51,11 @@ class Aside extends Component
         if ($hasPermission) {
             $query = Navigation::query()
                 ->whereNull('parent_id')
-                ->where('is_active', false)
+                ->where('is_active', true)
                 ->where('subdomain', $subdomain);
 
             $navigations = $query->with(['children' => function ($q) {
-                $q->where('is_active', false);
+                $q->where('is_active', true);
             }])->get();
         } else {
             $navigations = collect([

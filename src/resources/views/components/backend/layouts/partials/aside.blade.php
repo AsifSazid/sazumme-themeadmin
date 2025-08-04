@@ -38,7 +38,6 @@
                     <span class="ml-2 text-sm"> {{ Str::title($navTitle) }} </span>
                 </a>
             @endforeach --}}
-
             @foreach ($navigations as $nav)
                 @if ($nav->children->count())
                     <!-- Accordion Parent -->
@@ -89,14 +88,20 @@
                     </div>
                 @else
                     <!-- Single Item (no children) -->
-                    <a href="{{ route($nav->route) }}"
-                        class="flex items-center p-2 text-sm text-gray-500 rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary
-                    {{ request()->routeIs($nav->route) ? 'bg-primary-100 dark:bg-primary font-semibold' : '' }}">
-                        @if ($nav->nav_icon)
-                            <i class="{{ $nav->nav_icon }} w-5 h-5"></i>
-                        @endif
-                        <span class="ml-2">{{ $nav->title }}</span>
-                    </a>
+                    @if (Route::has($nav->route))
+                        <a href="{{ route($nav->route) }}"
+                            class="flex items-center p-2 text-sm text-gray-500 rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary
+                                {{ request()->routeIs($nav->route) ? 'bg-primary-100 dark:bg-primary font-semibold' : '' }}">
+                            @if ($nav->nav_icon)
+                                <i class="{{ $nav->nav_icon }} w-5 h-5"></i>
+                            @endif
+                            <span class="ml-2">{{ $nav->title }}</span>
+                        </a>
+                    @else
+                        <span class="flex items-center p-2 text-sm text-red-500 bg-red-50 rounded-md">
+                            ⚠️ Invalid Route: <code>{{ $nav->title }}</code>
+                        </span>
+                    @endif
                 @endif
             @endforeach
 
