@@ -1,43 +1,6 @@
 <aside class="flex-shrink-0 hidden w-64 bg-white border-r dark:border-primary-darker dark:bg-darker md:block">
     <div class="flex flex-col h-full">
         <nav aria-label="Main" class="flex-1 px-2 py-4 space-y-2 overflow-y-hidden hover:overflow-y-auto">
-            {{-- <div x-data="{ isActive: true, open: true }">
-                <!-- active & hover classes 'bg-primary-100 dark:bg-primary' -->
-                <a href="#" class="{{ request()->routeIs('admin.dashboard') ? 'bg-primary-100 dark:bg-primary' : '' }} flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary" role="button" aria-haspopup="true"
-                    :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                    <span aria-hidden="true">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                    </span>
-                    <span class="ml-2 text-sm"> Dashboards </span>
-                </a>
-            </div> --}}
-
-            {{-- @foreach ($navigations as $navTitle => $navLink)
-                @php
-                    $url = is_array($navLink) ? route($navLink['name'], $navLink['params']) : $navLink;
-                    
-                    $isActive = is_array($navLink)
-                        ? request()->routeIs($navLink['name'])
-                        : request()->url() === $navLink;
-                @endphp
-
-                <a href="{{ $url }}"
-                    class="{{ $isActive ? 'bg-primary-100 dark:bg-primary' : '' }} flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-primary"
-                    role="button" aria-haspopup="true" :aria-expanded="(open || isActive) ? 'true' : 'false'">
-                    <span aria-hidden="true">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                        </svg>
-                    </span>
-                    <span class="ml-2 text-sm"> {{ Str::title($navTitle) }} </span>
-                </a>
-            @endforeach --}}
             @foreach ($navigations as $nav)
                 @if ($nav->children->count())
                     <!-- Accordion Parent -->
